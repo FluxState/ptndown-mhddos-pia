@@ -1,0 +1,24 @@
+version: '2.4'
+services:
+ ptndown-mhddos-pia:
+  build:
+    args:
+      PIA_USER: ${PIA_USER}
+      PIA_PASS: ${PIA_PASS}
+    context: .
+    dockerfile: Dockerfile
+  cap_add:
+    - NET_ADMIN
+  devices:
+    - /dev/net/tun
+  image: fluxstate/ptndown-mhddos-pia
+  ports:
+    - "8049/tcp"
+  sysctls:
+    - net.ipv4.tcp_timestamps=0
+    - net.ipv6.conf.all.disable_ipv6=1
+    - net.ipv6.conf.default.disable_ipv6=1
+  ulimits:
+    nofile:
+      soft: 1048576
+      hard: 1048576
