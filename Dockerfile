@@ -1,13 +1,46 @@
-FROM ubuntu:latest
+FROM ubuntu:latest as Builder
 
 ARG CACHEBUST="1"
 RUN echo "$CACHEBUST"
 ARG CI=""
 
-RUN apt-get update && \
+ENV PYTHONUNBUFFERED 1
+
+RUN apt update && \
+    [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y curl gcc-12 git make software-properties-common && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 python3.11-dev python3.11-venv
+
+RUN ln -s /usr/bin/x86_64-linux-gnu-gcc-12 /usr/bin/x86_64-linux-gnu-gcc
+RUN python3.11 -m venv /opt/venv/
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN git clone --branch 'ru-resolvers' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
+RUN git clone --depth 1 https://github.com/pia-foss/manual-connections.git /opt/pia
+RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
+RUN git clone --branch 'cython02929' --depth 1 https://github.com/FluxState/yarl.git /opt/yarl
+
+WORKDIR /opt/yarl
+RUN make cythonize && pip install -e . && \
+    pip install certifi cloudscraper colorama dnspython requests tabulate \
+    'git+https://github.com/porthole-ascend-cinnamon/PyRoxy.git'
+
+
+FROM ubuntu:latest as Runner
+
+ARG CACHEBUST="1"
+RUN echo "$CACHEBUST"
+ARG CI=""
+
+ENV PYTHONUNBUFFERED 1
+
+RUN apt update && \
     [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    build-essential cron curl dnsutils dumb-init git jq openvpn psmisc python3.10-dev python3-pip
+    cron curl dnsutils dumb-init jq openvpn psmisc software-properties-common && \
+    add-apt-repository -y ppa:deadsnakes/ppa && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11
 
 COPY regions /config/regions
 COPY resolv.conf /config/resolv.conf
@@ -18,22 +51,22 @@ COPY crontab /etc/cron.d/ptndown-pia
 ARG PIA_USER="**None**"
 ARG PIA_PASS="**None**"
 
-ENV PIA_USER=$PIA_USER \
-    PIA_PASS=$PIA_PASS
+ENV PATH="/opt/venv/bin:$PATH" \
+    PIA_USER=$PIA_USER \
+    PIA_PASS=$PIA_PASS \
+    PYTHONUNBUFFERED=1
 
 RUN chmod 0644 /etc/cron.d/ptndown-pia && \
     crontab /etc/cron.d/ptndown-pia && \
     touch /var/log/cron.log
 
-RUN echo 3
-
-RUN git clone --branch 'ru-resolvers' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
-RUN git clone --depth 1 https://github.com/pia-foss/manual-connections.git /opt/pia
-RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
-
-RUN pip3 install -r /opt/mhddos_proxy/requirements.txt
-
-RUN apt-get -y remove build-essential git python3.10-dev && \
+RUN apt-get remove -y software-properties-common && \
     apt-get autoremove -y && apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/* /tmp/*
+
+COPY --from=Builder /opt/mhddos_proxy/ opt/mhddos_proxy/
+COPY --from=Builder /opt/pia/ opt/pia/
+COPY --from=Builder /opt/venv/ opt/venv/
+COPY --from=Builder /opt/warlists/ opt/warlists/
+COPY --from=Builder /opt/yarl/ opt/yarl/
 
 CMD ["dumb-init", "/start.sh"]

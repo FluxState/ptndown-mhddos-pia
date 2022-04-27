@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 killall -9 python3
 
 killall openvpn
-sleep "$(shuf -i 1-10 -n 1)"
+sleep "$(shuf -i 1-30 -n 1)"
 
 set -e
 
