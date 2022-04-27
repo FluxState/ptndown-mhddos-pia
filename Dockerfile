@@ -12,7 +12,7 @@ RUN apt update && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 python3.11-dev python3.11-venv
 
-RUN ln -s /usr/bin/x86_64-linux-gnu-gcc-12 /usr/bin/x86_64-linux-gnu-gcc
+RUN ls /usr/bin/ | grep -oP "([a-z0-9\-_]+)(gcc)(-[a-z]+)?" | xargs bash -c 'for link in ${@:1}; do ln -s -f "/usr/bin/${link}-${0}" "/usr/bin/${link}"; done' 12
 RUN python3.11 -m venv /opt/venv/
 ENV PATH="/opt/venv/bin:$PATH"
 
