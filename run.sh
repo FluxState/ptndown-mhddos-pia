@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export PATH="/opt/venv/bin:$PATH"
+
 killall -9 python3
 
 killall openvpn
