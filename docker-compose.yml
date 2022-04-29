@@ -12,6 +12,7 @@ services:
   devices:
     - /dev/net/tun
   image: fluxstate/ptndown-mhddos-pia
+  restart: unless-stopped
   sysctls:
     - net.ipv4.tcp_timestamps=0
     - net.ipv6.conf.all.disable_ipv6=1
