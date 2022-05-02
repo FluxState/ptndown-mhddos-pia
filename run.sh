@@ -23,5 +23,5 @@ shuf /config/resolv.conf >/etc/resolv.conf
 cd /opt/mhddos_proxy
 /opt/warlists/scripts/run_l7.sh &
 /opt/warlists/scripts/run_l7_apache.sh &
-#/opt/warlists/scripts/run_l7_cf.sh &
+/opt/warlists/scripts/run_l7_cf.sh &
 /opt/warlists/scripts/run_l7_get-stress.sh &
