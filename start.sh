@@ -7,6 +7,6 @@ echo "PIA_PASS=$PIA_PASS" >>/etc/environment
 
 service cron start
 
-bash /run.sh >>/var/log/ptndown.log
+bash /run.sh &>>/var/log/ptndown.log
 
 tail -f /var/log/ptndown.log
