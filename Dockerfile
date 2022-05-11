@@ -42,6 +42,7 @@ RUN apt update && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11
 
+COPY hosts /config/hosts
 COPY regions /config/regions
 COPY resolv.conf /config/resolv.conf
 COPY run.sh /run.sh
