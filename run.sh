@@ -18,6 +18,5 @@ echo -e "$(curl 'https://api.my-ip.io/ip' 2> /dev/null)\n"
 
 cd /opt/mhddos_proxy
 /opt/warlists/scripts/run_l7.sh &
-/opt/warlists/scripts/run_l7_apache.sh &
 /opt/warlists/scripts/run_l7_cf.sh &
 /opt/warlists/scripts/run_l7_get-stress.sh &
