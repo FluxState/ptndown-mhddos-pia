@@ -10,21 +10,20 @@ RUN apt update && \
     [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y curl gcc-12 git make software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 python3.11-dev python3.11-venv
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10 python3.10-dev python3.10-venv
 
 RUN ls /usr/bin/ | grep -oP "([a-z0-9\-_]+)(gcc)(-[a-z]+)?" | xargs bash -c 'for link in ${@:1}; do ln -s -f "/usr/bin/${link}-${0}" "/usr/bin/${link}"; done' 12
-RUN python3.11 -m venv /opt/venv/
+RUN python3.10 -m venv /opt/venv/
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN git clone --branch 'ru-resolvers' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
+RUN git clone --branch 'local-resolver' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
 RUN git clone --depth 1 https://github.com/pia-foss/manual-connections.git /opt/pia
 RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
 RUN git clone --branch 'cython02929' --depth 1 https://github.com/FluxState/yarl.git /opt/yarl
 
 WORKDIR /opt/yarl
 RUN make cythonize && pip install -e . && \
-    pip install certifi cloudscraper colorama dnspython requests tabulate \
-    'git+https://github.com/porthole-ascend-cinnamon/PyRoxy.git'
+    pip install certifi requests tabulate colorama dnspython asyncstdlib aiohttp aiohttp_socks async-timeout uvloop pyopenssl
 
 
 FROM ubuntu:latest as Runner
@@ -40,7 +39,7 @@ RUN apt update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     cron curl dnsutils dumb-init jq openvpn psmisc software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10
 
 COPY hosts /config/hosts
 COPY regions /config/regions
