@@ -10,6 +10,6 @@ cat /config/resolv.conf >> /etc/resolv.conf
 
 service cron start
 
-bash /run.sh &>>/var/log/ptndown.log
+bash /run.sh &>>/var/log/ptndown.log &
 
 tail -f /var/log/ptndown.log

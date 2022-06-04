@@ -1,4 +1,4 @@
-FROM ubuntu:latest as Builder
+FROM ubuntu:latest as builder
 
 ARG CACHEBUST="1"
 RUN echo "$CACHEBUST"
@@ -26,7 +26,7 @@ RUN make cythonize && pip install -e . && \
     pip install certifi requests tabulate colorama dnspython asyncstdlib aiohttp aiohttp_socks async-timeout uvloop pyopenssl
 
 
-FROM ubuntu:latest as Runner
+FROM ubuntu:latest as runner
 
 ARG CACHEBUST="1"
 RUN echo "$CACHEBUST"
@@ -63,10 +63,10 @@ RUN chmod 0644 /etc/cron.d/ptndown-pia && \
 RUN apt-get remove -y software-properties-common && \
     apt-get autoremove -y && apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/* /tmp/*
 
-COPY --from=Builder /opt/mhddos_proxy/ opt/mhddos_proxy/
-COPY --from=Builder /opt/pia/ opt/pia/
-COPY --from=Builder /opt/venv/ opt/venv/
-COPY --from=Builder /opt/warlists/ opt/warlists/
-COPY --from=Builder /opt/yarl/ opt/yarl/
+COPY --from=builder /opt/mhddos_proxy/ opt/mhddos_proxy/
+COPY --from=builder /opt/pia/ opt/pia/
+COPY --from=builder /opt/venv/ opt/venv/
+COPY --from=builder /opt/warlists/ opt/warlists/
+COPY --from=builder /opt/yarl/ opt/yarl/
 
 CMD ["dumb-init", "/start.sh"]
