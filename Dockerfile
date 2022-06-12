@@ -51,7 +51,8 @@ COPY crontab /etc/cron.d/ptndown-pia
 ARG PIA_USER="**None**"
 ARG PIA_PASS="**None**"
 
-ENV PATH="/opt/venv/bin:$PATH" \
+ENV IS_DOCKER=1 \
+    PATH="/opt/venv/bin:$PATH" \
     PIA_USER=$PIA_USER \
     PIA_PASS=$PIA_PASS \
     PYTHONUNBUFFERED=1

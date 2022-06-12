@@ -78,7 +78,7 @@ defaults: &defaults
     DEBIAN_FRONTEND: "noninteractive"
     DOCKER_BUILDKIT: "1"
   machine:
-    image: ubuntu-2004:202111-02
+    image: ubuntu-2204:current
   parameters:
     image-name:
       type: string
