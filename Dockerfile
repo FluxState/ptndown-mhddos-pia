@@ -19,11 +19,9 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN git clone --branch 'local-resolver' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
 RUN git clone --depth 1 https://github.com/pia-foss/manual-connections.git /opt/pia
 RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
-RUN git clone --branch 'cython02929' --depth 1 https://github.com/FluxState/yarl.git /opt/yarl
 
-WORKDIR /opt/yarl
-RUN make cythonize && pip install -e . && \
-    pip install certifi requests tabulate colorama dnspython asyncstdlib aiohttp aiohttp_socks async-timeout uvloop pyopenssl
+RUN pip install aiohttp aiohttp_socks asyncstdlib async-timeout certifi colorama dnspython pyopenssl requests tabulate \
+    uvloop yarl
 
 
 FROM ubuntu:latest as runner
@@ -68,6 +66,5 @@ COPY --from=builder /opt/mhddos_proxy/ opt/mhddos_proxy/
 COPY --from=builder /opt/pia/ opt/pia/
 COPY --from=builder /opt/venv/ opt/venv/
 COPY --from=builder /opt/warlists/ opt/warlists/
-COPY --from=builder /opt/yarl/ opt/yarl/
 
 CMD ["dumb-init", "/start.sh"]
