@@ -16,12 +16,13 @@ RUN ls /usr/bin/ | grep -oP "([a-z0-9\-_]+)(gcc)(-[a-z]+)?" | xargs bash -c 'for
 RUN python3.10 -m venv /opt/venv/
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN git clone --branch 'local-resolver' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
+RUN git clone --branch 'local-resolver-2' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
 RUN git clone --depth 1 https://github.com/pia-foss/manual-connections.git /opt/pia
 RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
 
-RUN pip install aiohttp aiohttp_socks asyncstdlib async-timeout certifi colorama dnspython pyopenssl requests tabulate \
-    uvloop yarl
+WORKDIR /opt/mhddos_proxy
+
+RUN python3.10 -m pip install -U pip wheel -r requirements.txt
 
 
 FROM ubuntu:latest as runner
@@ -29,8 +30,6 @@ FROM ubuntu:latest as runner
 ARG CACHEBUST="1"
 RUN echo "$CACHEBUST"
 ARG CI=""
-
-ENV PYTHONUNBUFFERED 1
 
 RUN apt update && \
     [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
@@ -49,7 +48,8 @@ COPY crontab /etc/cron.d/ptndown-pia
 ARG PIA_USER="**None**"
 ARG PIA_PASS="**None**"
 
-ENV IS_DOCKER=1 \
+ENV AUTO_MH=1 \
+    IS_DOCKER=1 \
     PATH="/opt/venv/bin:$PATH" \
     PIA_USER=$PIA_USER \
     PIA_PASS=$PIA_PASS \
