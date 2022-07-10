@@ -33,7 +33,7 @@ ARG CI=""
 RUN apt update && \
     [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    cron curl dnsutils dumb-init jq openvpn psmisc software-properties-common && \
+    cron curl dnsutils dumb-init jq ncal openvpn psmisc software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10
 
