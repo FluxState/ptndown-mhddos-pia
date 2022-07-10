@@ -28,6 +28,7 @@ services:
     - politcentr.ru:87.236.16.126
     - russia-insider.com:158.69.116.70
     - sbarro-pizza.ru:185.165.123.36
+    - thesaker.is:23.111.129.34
     - www.voltairenet.org:65.108.13.235
     - wpristav.com:193.109.246.53
   image: fluxstate/ptndown-mhddos-pia
