@@ -16,6 +16,8 @@ PREFERRED_REGION="$(shuf -n 1 /config/regions | sed -e 's/\r//' | sed -e 's/\n//
 
 echo -e "$(curl 'https://api.my-ip.io/ip' 2> /dev/null)\n"
 
+cd /opt/warlists && git pull
+
 cd /opt/mhddos_proxy
 /opt/warlists/scripts/run_l7.sh &>>/var/log/ptndown.log &
 /opt/warlists/scripts/run_l7_cf.sh &>>/var/log/ptndown.log &
