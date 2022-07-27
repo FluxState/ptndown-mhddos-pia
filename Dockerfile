@@ -37,12 +37,14 @@ RUN apt update && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10
 
-COPY hosts /config/hosts
-COPY regions /config/regions
+RUN apt-get remove -y software-properties-common && \
+    apt-get autoremove -y && apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/* /tmp/*
+
 COPY resolv.conf /config/resolv.conf
-COPY run.sh /run.sh
-COPY start.sh /start.sh
-COPY crontab /etc/cron.d/ptndown-pia
+ADD regions /config/regions
+ADD run.sh /run.sh
+ADD start.sh /start.sh
+ADD crontab /etc/cron.d/ptndown-pia
 
 ARG PIA_USER="**None**"
 ARG PIA_PASS="**None**"
@@ -55,9 +57,6 @@ ENV IS_DOCKER=1 \
 RUN chmod 0644 /etc/cron.d/ptndown-pia && \
     crontab /etc/cron.d/ptndown-pia && \
     touch /var/log/cron.log
-
-RUN apt-get remove -y software-properties-common && \
-    apt-get autoremove -y && apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/* /tmp/*
 
 COPY --from=builder /opt/mhddos_proxy/ opt/mhddos_proxy/
 COPY --from=builder /opt/pia/ opt/pia/

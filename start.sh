@@ -5,8 +5,8 @@ touch /var/log/ptndown.log
 echo "PIA_USER=$PIA_USER" >>/etc/environment
 echo "PIA_PASS=$PIA_PASS" >>/etc/environment
 
-cat /config/hosts >> /etc/hosts
 cat /config/resolv.conf >> /etc/resolv.conf
+cat /opt/warlists/hosts >> /etc/hosts
 
 service cron start
 
