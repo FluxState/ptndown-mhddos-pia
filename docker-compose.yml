@@ -22,13 +22,15 @@ services:
     - www.donnews.ru:185.179.190.159
     - dontimes.ru:87.236.16.17
     - fine-news.ru:213.139.208.57
+    - lug-info.com:185.12.125.139
     - mosregtoday.ru:178.154.213.69
     - novorossiia.ru:136.243.2.150
     - politcentr.ru:87.236.16.126
+    - politexpert.net:188.124.36.76
     - rostovgazeta.ru:5.188.73.213
     - russia-insider.com:158.69.116.70
     - sbarro-pizza.ru:185.165.123.36
-    - www.voltairenet.org:65.108.13.235
+    - therussophile.org:3.66.136.156
   image: fluxstate/ptndown-mhddos-pia
   restart: unless-stopped
   sysctls:
