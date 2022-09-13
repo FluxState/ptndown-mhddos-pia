@@ -15,9 +15,6 @@ services:
     - 77.88.8.1
     - 77.88.8.2
   extra_hosts:
-    - 360tv.ru:95.213.164.20
-    - 47news.ru:77.244.221.63
-    - anews.com:88.212.236.76
     - donbasstoday.ru:193.233.15.62
     - www.donnews.ru:185.179.190.159
     - dontimes.ru:87.236.16.17

@@ -14,7 +14,7 @@ RUN ls /usr/bin/ | grep -oP "([a-z0-9\-_]+)(gcc)(-[a-z]+)?" | xargs bash -c 'for
 RUN python3.10 -m venv /opt/venv/
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN git clone --depth 1 https://github.com/porthole-ascend-cinnamon/mhddos_proxy.git /opt/mhddos_proxy
+RUN git clone --branch 'local-resolvers' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
 RUN git clone --depth 1 https://github.com/pia-foss/manual-connections.git /opt/pia
 RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
 
@@ -51,9 +51,8 @@ RUN apt update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     cron curl dnsutils dumb-init git jq ncal openvpn psmisc software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10
-
-RUN apt-get remove -y software-properties-common && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10 && \
+    apt-get remove -y software-properties-common && \
     apt-get autoremove -y && apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/* /tmp/*
 
 COPY resolv.conf /config/resolv.conf
