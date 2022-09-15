@@ -20,24 +20,10 @@ RUN git clone --depth 1 https://github.com/FluxState/warlists.git /opt/warlists
 
 WORKDIR /opt/mhddos_proxy
 
+RUN rm -rf .git
+
 RUN python3.10 -m pip install --no-cache-dir -U pip wheel && \
-    pip3.10 install --no-cache-dir -U \
-    aiohttp \
-    aiohttp_socks \
-    asyncstdlib \
-    async-timeout \
-    colorama  \
-    cryptography \
-    cython  \
-    certifi  \
-    dnspython \
-    frozenlist \
-    jinja2 \
-    psutil \
-    pyopenssl \
-    requests  \
-    uvloop \
-    yarl
+    pip3.10 install --no-cache-dir -U -r requirements.txt
 
 
 FROM ubuntu:latest as runner
