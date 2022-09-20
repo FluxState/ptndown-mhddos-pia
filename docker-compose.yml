@@ -26,6 +26,7 @@ services:
     - mosregtoday.ru:178.154.213.69
     - nation-news.ru:82.202.163.4
     - novorossiia.ru:136.243.2.150
+    - pikabu.ru:91.228.155.94
     - politcentr.ru:87.236.16.126
     - politexpert.net:188.124.36.76
     - rostovgazeta.ru:5.188.73.213
