@@ -8,10 +8,10 @@ RUN apt update && \
     [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y curl gcc-12 git make software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10 python3.10-dev python3.10-venv
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 python3.11-dev python3.11-venv
 
 RUN ls /usr/bin/ | grep -oP "([a-z0-9\-_]+)(gcc)(-[a-z]+)?" | xargs bash -c 'for link in ${@:1}; do ln -s -f "/usr/bin/${link}-${0}" "/usr/bin/${link}"; done' 12
-RUN python3.10 -m venv /opt/venv/
+RUN python3.11 -m venv /opt/venv/
 ENV PATH="/opt/venv/bin:$PATH"
 
 RUN git clone --branch 'local-resolvers' --depth 1 https://github.com/FluxState/mhddos_proxy.git /opt/mhddos_proxy
@@ -22,8 +22,8 @@ WORKDIR /opt/mhddos_proxy
 
 RUN rm -rf .git
 
-RUN python3.10 -m pip install --no-cache-dir -U pip wheel && \
-    pip3.10 install --no-cache-dir -U -r requirements.txt
+RUN python3.11 -m pip install --no-cache-dir -U pip wheel && \
+    pip3.11 install --no-cache-dir -U -r requirements.txt
 
 
 FROM ubuntu:latest as runner
@@ -37,7 +37,7 @@ RUN apt update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     cron curl dnsutils dumb-init git jq ncal openvpn psmisc software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.10 && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python3.11 && \
     apt-get remove -y software-properties-common && \
     apt-get autoremove -y && apt-get clean && rm -fr /var/lib/apt/lists/* /var/log/* /tmp/*
 

@@ -12,6 +12,7 @@ services:
   devices:
     - /dev/net/tun
   extra_hosts:
+    - 56orb.ru:5.188.73.213
     - www.donnews.ru:185.179.190.159
     - dontimes.ru:87.236.16.17
     - evening-crimea.com:116.202.245.90
