@@ -11,9 +11,6 @@ services:
     - NET_ADMIN
   devices:
     - /dev/net/tun
-  dns:
-    - 77.88.8.1
-    - 77.88.8.2
   extra_hosts:
     - www.donnews.ru:185.179.190.159
     - dontimes.ru:87.236.16.17
