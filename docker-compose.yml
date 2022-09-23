@@ -13,11 +13,13 @@ services:
     - /dev/net/tun
   extra_hosts:
     - 56orb.ru:5.188.73.213
+    - babolat-shop.ru:37.143.9.233
     - www.donnews.ru:185.179.190.159
     - dontimes.ru:87.236.16.17
     - evening-crimea.com:116.202.245.90
     - fine-news.ru:213.139.208.57
     - gorlovka-news.su:87.236.16.171
+    - www.kia.ru:176.107.161.73
     - kuban24.tv:82.202.160.250
     - lug-info.com:185.12.125.139
     - mkset.ru:5.188.73.213
