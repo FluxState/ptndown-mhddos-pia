@@ -21,3 +21,4 @@ cd /opt/warlists && git pull
 cd /opt/mhddos_proxy
 /opt/warlists/scripts/run_l7.sh &>>/var/log/ptndown.log &
 /opt/warlists/scripts/run_l7_get.sh &>>/var/log/ptndown.log &
+/opt/warlists/scripts/run_l7_http_template.sh &>>/var/log/ptndown.log &
