@@ -1,6 +1,6 @@
 FROM ubuntu:latest as builder
 
-ARG CACHEBUST="1"
+ARG CACHEBUST=""
 RUN echo "$CACHEBUST"
 ARG CI=""
 
@@ -28,7 +28,7 @@ RUN python3.11 -m pip install --no-cache-dir -U pip wheel && \
 
 FROM ubuntu:latest as runner
 
-ARG CACHEBUST="1"
+ARG CACHEBUST=""
 RUN echo "$CACHEBUST"
 ARG CI=""
 
@@ -64,4 +64,5 @@ COPY --from=builder /opt/pia/ opt/pia/
 COPY --from=builder /opt/venv/ opt/venv/
 COPY --from=builder /opt/warlists/ opt/warlists/
 
-CMD ["dumb-init", "/start.sh"]
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["/start.sh"]

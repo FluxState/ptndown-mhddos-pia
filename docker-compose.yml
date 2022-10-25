@@ -22,7 +22,6 @@ services:
     - gorlovka-news.su:87.236.16.171
     - www.kia.ru:176.107.161.73
     - kuban24.tv:82.202.160.250
-    - lug-info.com:185.12.125.139
     - mkset.ru:5.188.73.213
     - mosregtoday.ru:178.154.213.69
     - nation-news.ru:82.202.163.4
