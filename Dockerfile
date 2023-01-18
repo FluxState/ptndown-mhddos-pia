@@ -33,7 +33,8 @@ RUN echo "$CACHEBUST"
 ARG CI=""
 
 RUN apt update && \
-    [ ! -n "$CI" ] && apt-get dist-upgrade -y || : && \
+    [ ! -n "$CI" ] && \
+    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y || : && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     cron curl dnsutils dumb-init git jq ncal openvpn psmisc software-properties-common && \
     add-apt-repository -y ppa:deadsnakes/ppa && \
